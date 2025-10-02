@@ -1,0 +1,18 @@
+{
+    "@context": ["https://www.w3.org/ns/activitystreams"],
+    "type": "Create",
+    "actor": "https://smartbibl.ia/actors/publisher",
+    "object": {
+      "type": "Document",
+      "id": "https://example.org/docs/sample.txt",
+      "mediaType": "text/plain",
+      "name": "Sample Text",
+      "url": "https://example.org/docs/sample.txt"
+    },
+    "target": "https://localhost:8080/inbox",
+    "instrument": {
+      "type": "Service",
+      "name": "RAG Pipeline",
+      "action": "index"
+    }
+  }  
