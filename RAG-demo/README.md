@@ -30,3 +30,32 @@ RAG-notify-demo/
  │   └─ job.create.json     # payload LDN de départ
  └─ state/                  # sortie du POC (chunks, embeddings, index)
 ```
+
+## Run
+
+1. Launch Inbox (terminal A)
+```
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/inbox_server.py
+```
+
+2. Send the Create notif
+
+```
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/send_ldn.py \
+  --inbox http://localhost:8080/inbox \
+  --payload https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/examples/job.create.json
+```
+
+3. Launch the runner (orchestrator) (terminal B)
+
+```
+INBOX_URL=http://localhost:8080/inbox \
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/poll_and_run.py
+```
+
+4. Query the Index
+
+```
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/query.py --index state/index.jsonl \
+  --q "De quoi parle le document ?" --k 5
+```
