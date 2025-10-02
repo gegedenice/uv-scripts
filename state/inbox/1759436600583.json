@@ -1,0 +1,20 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams"
+  ],
+  "type": "Create",
+  "actor": "https://smartbibl.ia/actors/publisher",
+  "object": {
+    "type": "Document",
+    "id": "https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/examples/Inist_RA2024.md",
+    "mediaType": "text/plain",
+    "name": "Sample Text",
+    "url": "https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/ba571958a173624d977c949601bab53800cf695a/RAG-demo/examples/Inist_RA2024.md"
+  },
+  "target": "https://localhost:8080/inbox",
+  "instrument": {
+    "type": "Service",
+    "name": "RAG Pipeline",
+    "action": "index"
+  }
+}
