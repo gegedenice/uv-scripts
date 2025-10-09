@@ -12,10 +12,16 @@ import os
 import subprocess
 
 # Create an HTTP client for your API
-client = httpx.AsyncClient(base_url="https://smartbiblia.fr/api/openalex-openapi-server")
+client = httpx.AsyncClient(
+    base_url="https://smartbiblia.fr/api/openalex-openapi-server",
+    timeout=None  # disable client-side timeouts for long-running operations
+)
 
 # Load your OpenAPI spec 
-openapi_spec = httpx.get("https://smartbiblia.fr/api/openalex-openapi-server/openapi.json").json()
+openapi_spec = httpx.get(
+    "https://smartbiblia.fr/api/openalex-openapi-server/openapi.json",
+    timeout=None  # avoid startup fetch timing out on slow networks
+).json()
 
 # Create the MCP server
 mcp = FastMCP.from_openapi(

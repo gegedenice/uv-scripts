@@ -149,3 +149,17 @@ This script creates a FastMCP server that exposes the OpenALex API through the M
 - **Base URL**: https://smartbiblia.fr/api/openalex-openapi-server
 
 The server automatically fetches the latest OpenAPI specification from the remote server and creates MCP tools based on the available endpoints.
+
+### Configuration example
+
+```
+{
+  "mcpServers": {
+    "openalex-mcp-server": {
+        "command": "uv",
+        "args": ["run", "https://raw.githubusercontent.com/gegedenice/uv-scripts/main/openalex-mcp-server.py"],
+        "url": "http://localhost:3333/mcp"
+    }     	
+  }
+}
+```
