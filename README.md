@@ -5,7 +5,7 @@ uv utilities : some python files remotly actionable with `uv run...`
 ## llms-openai-inference.py
 
 ```
-GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/refs/heads/main/llms-openai-inference.py"
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/llms-openai-inference.py"
 ```
 
 ### List models (any provider) — raw JSON
@@ -120,3 +120,32 @@ uv run "{GH_RAW}" \
   --model gpt-4o-mini \
   -u "$(cat prompt.txt)"
 ```
+
+## OpenALex MCP server
+
+```
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/openalex-mcp-server.py"
+```
+
+### Start the OpenALex MCP Server
+
+```bash
+uv run "{GH_RAW}"
+```
+
+This script creates a FastMCP server that exposes the OpenALex API through the Model Context Protocol (MCP). The server:
+
+- Connects to the OpenALex OpenAPI server at `https://smartbiblia.fr/api/openalex-openapi-server`
+- Dynamically loads the OpenAPI specification
+- Runs as a streamable HTTP server on `http://0.0.0.0:3333/mcp`
+- Uses stateless HTTP mode for OpenAI Response API compatibility
+
+### Server Details
+
+- **Host**: 0.0.0.0 (all interfaces)
+- **Port**: 3333
+- **Path**: /mcp
+- **Transport**: streamable-http
+- **Base URL**: https://smartbiblia.fr/api/openalex-openapi-server
+
+The server automatically fetches the latest OpenAPI specification from the remote server and creates MCP tools based on the available endpoints.
