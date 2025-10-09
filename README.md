@@ -156,6 +156,7 @@ The server automatically fetches the latest OpenAPI specification from the remot
 {
   "mcpServers": {
     "openalex-mcp-server": {
+        "type": "streamable-http",
         "command": "uv",
         "args": ["run", "https://raw.githubusercontent.com/gegedenice/uv-scripts/main/openalex-mcp-server.py"],
         "url": "http://localhost:3333/mcp"
