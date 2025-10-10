@@ -2,6 +2,16 @@
 
 uv utilities : some python files remotly actionable with `uv run...`
 
+## Idref Web services
+
+```
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/idref-webservice-basic.py"
+```
+
+```
+uv run "{GH_RAW}" --web-service idref2id --id 240229061 --json-output
+```
+
 ## llms-openai-inference.py
 
 ```
