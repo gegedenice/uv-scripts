@@ -168,16 +168,13 @@ uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_S
 
 ### Environement variables
 
-```
 | Variable                                         | Purpose                              | Recommended                                                         |
 | ------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------- |
 | `FASTMCP_EXPERIMENTAL_ENABLE_NEW_OPENAPI_PARSER` | Enables FastMCP’s new OpenAPI parser | Set to `true` **before** using FastMCP (already done in the script) |
 
-```
 
 ### CLI flags
 
-```
 | Flag                 | Values / Type                        |   Default                                                        | Notes                                                                           |
 | -------------------- | ------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `--api-base-url`     | string                               | `https://api.openalex.org`                                       | Base URL for the target API                                                     |
@@ -187,8 +184,6 @@ uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_S
 | `--port`             | int                                  | `3333`                                                           | HTTP modes only                                                                 |
 | `--path`             | string                               | `/mcp`                                                           | HTTP modes only                                                                 |
 | `--stateless-http`   | flag                                 | `false`                                                          | Required for HTTP transport modes                                               |
-
-```
 
 ### Configuration examples
 
