@@ -197,7 +197,7 @@ uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_S
 ### Configuration examples
 
 ```
-# STDIO MCP server on <your_api_url> from <your_openapi_spec>
+# STDIO MCP server on your API_BASE_URL and OPENAPI_SPEC_URL variables
 {
   "mcpServers": {
     "openapi-mcp-server": {
