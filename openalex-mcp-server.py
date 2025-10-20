@@ -13,7 +13,7 @@ import subprocess
 
 # Create an HTTP client for your API
 client = httpx.AsyncClient(
-    base_url="https://smartbiblia.fr/api/openalex-openapi-server",
+    base_url="https://api.openalex.org",
     timeout=None  # disable client-side timeouts for long-running operations
 )
 
