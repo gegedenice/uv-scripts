@@ -3,13 +3,16 @@
 # requires-python = ">=3.11"
 # dependencies = [
 #   "fastmcp",
-#   "httpx"
+#   "httpx[brotli]"
 # ]
 # ///
 import httpx
 from fastmcp import FastMCP
+import json
 import os
 import subprocess
+
+os.environ["FASTMCP_EXPERIMENTAL_ENABLE_NEW_OPENAPI_PARSER"]="True"
 
 # Create an HTTP client for your API
 client = httpx.AsyncClient(
