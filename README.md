@@ -157,13 +157,22 @@ OPENAPI_SPEC_URL="..." # Fill with an OpenAPI json specification (url-based or l
 uv run "{GH_RAW}"
 
 # STDIO
-uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport stdio
+uv run "{GH_RAW}" \
+   --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" \
+   --transport stdio
 
 # Local HTTP
-uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport http --port 3333 --path /mcp
+uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" \
+   --transport http \
+   --port 3333 \
+   --path /mcp
 
 # Streamable HTTP
-uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport streamable-http --port 3333 --path /mcp --stateless-http
+uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" \
+   --transport streamable-http \
+   --port 3333 \
+   --path /mcp \
+   --stateless-http
 ```
 
 ### Environement variables
