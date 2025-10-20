@@ -29,12 +29,16 @@ openapi_spec = httpx.get(
 mcp = FastMCP.from_openapi(
     openapi_spec=openapi_spec,
     client=client,
-    stateless_http=True, #!important for OpenAI Response API to accept the MCP streamable http transport mode
-    name="MCP Server"
+    name="OpenAlex MCP Server"
 )
 if __name__ == "__main__":
     print("Starting FastMCP server...")
     try:
-        mcp.run(transport="streamable-http", host="0.0.0.0", port=3333, path="/mcp")
+        #mcp.run(transport="streamable-http", host="0.0.0.0", port=3333, path="/mcp", stateless_http=True) #!important stateless_http for OpenAI Response API to accept the MCP streamable http transport mode
+        mcp.run()
     except Exception as e:
         print(f"FastMCP server crashed: {{e}}", exc_info=True)
+        
+#uv run openaalex-mcp-server.py --transport streamable-http --host 0.0.0.0 --port 3333 --path /mcp
+#uv run openaalex-mcp-server.py --transport http --host 0.0.0.0 --port 9999 --path /mcp
+#uv run openalex-mcp-server.py --transport stdio
