@@ -131,44 +131,86 @@ uv run "{GH_RAW}" \
   -u "$(cat prompt.txt)"
 ```
 
-## OpenALex MCP server
+## Script for generic MCP servers from OpenAPI specifications : mcp-server-from-openapi.py 
+
+One file, one command : Minimal MCP server generated from an OpenAPI specification using FastMCP with multiple transport features (STDIO, HTTP and Streamable-HTTP).
+
+The server automatically fetches the OpenAPI specification and creates MCP tools based on the available endpoints.
+
+By default, this MCP server targets the OpenAlex REST API using this [provided OpenAPI specification](https://smartbiblia.fr/api/openalex-openapi-server/openapi.json), but it can dynamically adapt to any other API by changing the CLI parameters.
+
+## How it works
+
+1. Loads an OpenAPI spec from a online openapi.json file.
+2. Creates an httpx.AsyncClient pinned to the API url (the one described by the openapi.json file).
+3. Generates tools automatically with FastMCP.from_openapi(...).
+4. Starts the MCP server in the transport you choose at runtime.
+
+### Minimal launch commands
 
 ```
-GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/openalex-mcp-server.py"
-```
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/mcp-server-from-openapi.py"
+API_BASE_URL="..." # Fill with your API base url
+OPENAPI_SPEC_URL="..." # Fill with an OpenAPI json specification (url-based or local path)
 
-### Start the OpenALex MCP Server
-
-```bash
+# Default STDIO on OpenAlex API
 uv run "{GH_RAW}"
+
+# STDIO
+uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport stdio
+
+# Local HTTP
+uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport http --port 3333 --path /mcp
+
+# Streamable HTTP
+uv run "{GH_RAW}" --api-base-url "{API_BASE_URL}" --openapi-spec-url "{OPENAPI_SPEC_URL}" --transport streamable-http --port 3333 --path /mcp --stateless-http
 ```
 
-This script creates a FastMCP server that exposes the OpenALex API through the Model Context Protocol (MCP). The server:
-
-- Connects to the OpenALex OpenAPI server at `https://smartbiblia.fr/api/openalex-openapi-server`
-- Dynamically loads the OpenAPI specification
-- Runs as a streamable HTTP server on `http://0.0.0.0:3333/mcp`
-- Uses stateless HTTP mode for OpenAI Response API compatibility
-
-### Server Details
-
-- **Host**: 0.0.0.0 (all interfaces)
-- **Port**: 3333
-- **Path**: /mcp
-- **Transport**: streamable-http
-- **Base URL**: https://smartbiblia.fr/api/openalex-openapi-server
-
-The server automatically fetches the latest OpenAPI specification from the remote server and creates MCP tools based on the available endpoints.
-
-### Configuration example
+### Environement variables
 
 ```
+| Variable                                         | Purpose                              | Recommended                                                         |
+| ------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------- |
+| `FASTMCP_EXPERIMENTAL_ENABLE_NEW_OPENAPI_PARSER` | Enables FastMCP’s new OpenAPI parser | Set to `true` **before** using FastMCP (already done in the script) |
+
+```
+
+### CLI flags
+
+```
+| Flag                 | Values / Type                        |   Default                                                        | Notes                                                                           |
+| -------------------- | ------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `--api-base-url`     | string                               | `https://api.openalex.org`                                       | Base URL for the target API                                                     |
+| `--openapi-spec-url` | string                               | `https://smartbiblia.fr/api/openalex-openapi-server/openapi.json`| OpenAPI JSON URL or local file path                                             |
+| `--transport`        | `stdio` | `http` | `streamable-http` | `stdio`                                                          | Use `stdio` for Cursor or Claude; `streamable-http` for OpenAI Responses MCP    |
+| `--host`             | string                               | `0.0.0.0`                                                        | HTTP modes only                                                                 |
+| `--port`             | int                                  | `3333`                                                           | HTTP modes only                                                                 |
+| `--path`             | string                               | `/mcp`                                                           | HTTP modes only                                                                 |
+| `--stateless-http`   | flag                                 | `false`                                                          | Required for HTTP transport modes                                               |
+
+```
+
+### Configuration examples
+
+```
+# STDIO MCP server on <your_api_url> from <your_openapi_spec>
 {
   "mcpServers": {
-    "openalex-mcp-server": {
-        "type": "streamable-http",
+    "openapi-mcp-server": {
         "command": "uv",
-        "args": ["run", "https://raw.githubusercontent.com/gegedenice/uv-scripts/main/openalex-mcp-server.py"],
+        "args": ["run", "https://raw.githubusercontent.com/gegedenice/uv-scripts/main/mcp-server-from-openapi.py", "--api-base-url", API_BASE_URL, "--openapi-spec-url", OPENAPI_SPEC_URL],
+    }     	
+  }
+}
+```
+
+```
+#streamable-http OpenAlex MCP server
+{
+  "mcpServers": {
+    "openapi-mcp-server": {
+        "command": "uv",
+        "args": ["run", "https://raw.githubusercontent.com/gegedenice/uv-scripts/main/mcp-server-from-openapi.py", "--transport", "streamable-http", "--stateless-http"],
         "url": "http://localhost:3333/mcp"
     }     	
   }
