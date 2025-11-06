@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.10"
 # dependencies = [
-#   "pymilvus[lite]",
+#   "pymilvus[milvus-lite]",
 #   "FlagEmbedding",
 #   "docling",
 #   "torch",
