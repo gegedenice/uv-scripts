@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["pymilvus"]
+# dependencies = ["pymilvus[lite]"]
 # ///
 import argparse, json, os
 from pymilvus import MilvusClient

@@ -7,7 +7,7 @@ This directory contains Python utilities for building and querying RAG (Retrieva
 - Python 3.10+
 - UV package manager
 - Dependencies will be automatically installed by UV:
-  - `pymilvus` - Vector database client
+  - `pymilvus[lite]` - Vector database client for local database
   - `FlagEmbedding` - For BGE-M3 embeddings
   - `docling` - Document processing
   - `torch` - Deep learning backend
