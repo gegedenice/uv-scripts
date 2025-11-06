@@ -20,7 +20,7 @@ This directory contains Python utilities for building and querying RAG (Retrieva
 Processes documents into chunks, generates embeddings, and stores them in Milvus.
 
 ```sh
-uv run ingest_files.py -- \
+uv run ingest_files.py \
   --files document1.txt document2.md \
   --collection rapports \
   --milvus-uri ./milvus.db \
@@ -43,7 +43,7 @@ Key options:
 Performs hybrid search using both dense and sparse embeddings.
 
 ```sh 
-uv run query_hybrid.py -- \
+uv run query_hybrid.py \
   --collection rapports \
   --milvus-uri ./milvus.db \
   --query "Your search query here" \
@@ -64,13 +64,13 @@ Utilities for managing Milvus collections.
 
 ```sh
 # List all collections
-uv run manage_collection.py -- --milvus-uri ./milvus.db list
+uv run manage_collection.py --milvus-uri ./milvus.db list
 
 # Get collection info
-uv run manage_collection.py -- --milvus-uri ./milvus.db info --collection rapports
+uv run manage_collection.py --milvus-uri ./milvus.db info --collection rapports
 
 # Drop a collection
-uv run manage_collection.py -- --milvus-uri ./milvus.db drop --collection rapports
+uv run manage_collection.py --milvus-uri ./milvus.db drop --collection rapports
 ```
 
 ## Environment Variables
@@ -85,13 +85,13 @@ All scripts can be run directly from GitHub using UV:
 GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/RAG"
 
 # Ingest documents
-uv run "${GH_RAW}/ingest_files.py" -- [options]
+uv run "${GH_RAW}/ingest_files.py" [options]
 
 # Query
-uv run "${GH_RAW}/query_hybrid.py" -- [options]
+uv run "${GH_RAW}/query_hybrid.py" [options]
 
 # Manage
-uv run "${GH_RAW}/manage_collection.py" -- [options]
+uv run "${GH_RAW}/manage_collection.py" [options]
 ```
 
 ## Architecture
