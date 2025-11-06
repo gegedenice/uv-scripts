@@ -2,6 +2,10 @@
 
 uv utilities : some python files remotly actionable with `uv run...`
 
+## RAG demo
+
+Some Python utilities for building and querying RAG, see [README](https://raw.githubusercontent.com/gegedenice/uv-scripts/main/RAG/README.md)
+
 ## Idref Web services
 
 ```
