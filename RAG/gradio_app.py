@@ -122,6 +122,7 @@ def main():
         hf_subpath_input = gr.Textbox(label="HF Subpath (if provider is huggingface)", value="novita/v3/openai")
         model_input = gr.Textbox(label="Model (e.g., moonshotai/kimi-k2-instruct)")
         token_input = gr.Textbox(label="API Token", type="password")
+        milvus_uri_input = gr.Textbox(label="Milvus URI", value=args.milvus_uri)
 
         with gr.Tab("LLM Inference"):
             system_prompt_input = gr.Textbox(label="System Prompt", lines=5)
@@ -143,7 +144,7 @@ def main():
             rag_answer_output = gr.Textbox(label="RAG Answer", lines=10)
             rag_button.click(
                 run_rag_query,
-                inputs=[rag_query_input, provider_input, hf_subpath_input, model_input, token_input, system_prompt_rag, args.milvus_uri],
+                inputs=[rag_query_input, provider_input, hf_subpath_input, model_input, token_input, system_prompt_rag, milvus_uri_input],
                 outputs=[retrieved_chunks_output, rag_answer_output]
             )
 
