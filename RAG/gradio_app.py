@@ -115,7 +115,7 @@ def main():
     args = parser.parse_args()
     
     # Update the global DEFAULT_URI for use in functions
-    global DEFAULT_URI
+    #global DEFAULT_URI
     DEFAULT_URI = args.milvus_uri
 
     with gr.Blocks() as demo:
