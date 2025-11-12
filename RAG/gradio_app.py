@@ -23,7 +23,7 @@ def run_inference(provider: str, hf_subpath: str, model: str, api_key: str, syst
     """
     # Construct the command
     command = [
-        "uv", "run", f"{GH_RAW}/llms-openai-inference.py", "--",
+        "uv", "run", f"{GH_RAW}/llms-openai-inference.py",
         "--provider", provider,
     ]
     if provider == "huggingface":
@@ -62,7 +62,7 @@ def get_retrieved_chunks(query: str, k: int, milvus_uri: str,collection_name: st
     """
     # Construct the command
     command = [
-        "uv", "run", f"{GH_RAW}/RAG/query_hybrid.py", "--",
+        "uv", "run", f"{GH_RAW}/RAG/query_hybrid.py",
         "--collection", collection_name,
         "--milvus-uri", milvus_uri,
         "--k", str(k),
