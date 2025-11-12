@@ -63,6 +63,7 @@ def get_retrieved_chunks(query: str, k: int, milvus_uri: str,collection_name: st
     # Construct the command
     command = [
         "uv", "run", f"{GH_RAW}/RAG/query_hybrid.py",
+        "--query", query,
         "--collection", collection_name,
         "--milvus-uri", milvus_uri,
         "--k", str(k),
