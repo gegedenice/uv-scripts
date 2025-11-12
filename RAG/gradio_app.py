@@ -56,7 +56,7 @@ def run_inference(provider: str, hf_subpath: str, model: str, api_key: str, syst
     else:
         return result.stdout
   
-def get_retrieved_chunks(query: str, k: int, collection_name: str) -> str:
+def get_retrieved_chunks(query: str, k: int, milvus_uri: str,collection_name: str) -> str:
     """
     Retrieves relevant chunks from Milvus using query_hybrid.py.
     """
@@ -64,7 +64,7 @@ def get_retrieved_chunks(query: str, k: int, collection_name: str) -> str:
     command = [
         "uv", "run", f"{GH_RAW}/RAG/query_hybrid.py", "--",
         "--collection", collection_name,
-        "--milvus-uri", DEFAULT_URI,
+        "--milvus-uri", milvus_uri,
         "--k", str(k),
         "--show-scores"
     ]
@@ -85,13 +85,13 @@ def get_retrieved_chunks(query: str, k: int, collection_name: str) -> str:
     except json.JSONDecodeError:
         raise Exception(f"Failed to parse JSON output: {result.stdout}")
   
-def run_rag_query(query: str, provider: str, hf_subpath: str, model: str, api_key: str, system_prompt: str) -> tuple[str, str]:
+def run_rag_query(query: str, provider: str, hf_subpath: str, model: str, api_key: str, system_prompt: str, milvus_uri: str) -> tuple[str, str]:
     """
     Retrieves relevant chunks from Milvus and generates a response using the specified LLM.
     """
     k = 5  # Number of chunks to retrieve
     collection_name = "rapports"
-    retrieved_chunks = get_retrieved_chunks(query, k, collection_name)
+    retrieved_chunks = get_retrieved_chunks(query, k, milvus_uri, collection_name)
 
     user_prompt = f"""Question:
 {query}
@@ -114,10 +114,6 @@ def main():
     parser.add_argument("--milvus-uri", default=DEFAULT_URI, help="Milvus DB URI (default from MILVUS_URI env or ./milvus.db)")
     args = parser.parse_args()
     
-    # Update the global DEFAULT_URI for use in functions
-    #global DEFAULT_URI
-    DEFAULT_URI = args.milvus_uri
-
     with gr.Blocks() as demo:
         gr.Markdown("## LLM Inference and RAG Query App")
 
@@ -147,7 +143,7 @@ def main():
             rag_answer_output = gr.Textbox(label="RAG Answer", lines=10)
             rag_button.click(
                 run_rag_query,
-                inputs=[rag_query_input, provider_input, hf_subpath_input, model_input, token_input, system_prompt_rag],
+                inputs=[rag_query_input, provider_input, hf_subpath_input, model_input, token_input, system_prompt_rag, args.milvus_uri],
                 outputs=[retrieved_chunks_output, rag_answer_output]
             )
 
