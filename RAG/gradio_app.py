@@ -2,16 +2,11 @@
 # requires-python = ">=3.10"
 # dependencies = [
 #   "gradio",
-#   "pymilvus[milvus_lite]",
-#   "FlagEmbedding",
-#   "tqdm",
-#   "torch",
 # ]
 # ///
 
 import gradio as gr
 import subprocess
-import urllib.parse
 import os, json
 
 GH_RAW = "https://raw.githubusercontent.com/gegedenice/uv-scripts/main"
@@ -107,7 +102,8 @@ Utilise le contexte suivant pour répondre à la question :
     except Exception as e:
         rag_answer = f"Error during inference: {str(e)}"
 
-    return retrieved_chunks, rag_answer
+    #return retrieved_chunks, rag_answer
+    return user_prompt, rag_answer
 
 def main():
     import argparse
@@ -141,7 +137,7 @@ def main():
             system_prompt_rag = gr.Textbox(label="System Prompt for RAG", lines=5, value="You are a helpful assistant.")
             rag_query_input = gr.Textbox(label="RAG Query", lines=5)
             rag_button = gr.Button("Run RAG")
-            retrieved_chunks_output = gr.Textbox(label="Retrieved Chunks", lines=10)
+            retrieved_chunks_output = gr.Textbox(label="Prompt with retrieved Chunks", lines=10)
             rag_answer_output = gr.Textbox(label="RAG Answer", lines=10)
             rag_button.click(
                 run_rag_query,
