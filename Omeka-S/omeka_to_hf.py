@@ -113,7 +113,7 @@ def parse_prefixes_arg(prefixes_arg: str | None) -> List[str] | None:
     """Parse --prefixes 'a,b,c' into a list ['a','b','c']."""
     if not prefixes_arg:
         return None
-    return [p.strip() for p in prefixes_arg.split(",") if p.strip()]
+    return tuple(p.strip() for p in prefixes_arg.split(",") if p.strip())
 
 
 def generate_dataset(
