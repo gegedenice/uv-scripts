@@ -59,6 +59,7 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import tempfile
 from io import BytesIO
 from typing import Any, Dict, List
 
@@ -399,52 +400,55 @@ def main() -> None:
     text_matrix_arr = np.stack(text_matrix)
     labels_arr = np.asarray(labels, dtype=np.int64)
 
+        # --------------------
+    # Save index + matrices in a temporary directory and upload
     # --------------------
-    # Save index + matrices locally
-    # --------------------
-    logger.info("Saving USearch index and embedding matrices locally...")
-    index_path = "usearch_index.usearch"
-    img_fbin_path = "image_embeddings.fbin"
-    txt_fbin_path = "text_embeddings.fbin"
-    labels_path = "labels.npy"
+    logger.info("Saving USearch index and embedding matrices in a temp directory and uploading to HF...")
 
-    #index.save(index_path)
-    #save_matrix(img_fbin_path, image_matrix_arr)
-    #save_matrix(txt_fbin_path, text_matrix_arr)
-    #np.save(labels_path, labels_arr)
-
-    # --------------------
-    # Upload artifacts to HF dataset repo
-    # --------------------
-    logger.info("Uploading USearch index and embedding matrices to %s...", args.hf_repo)
     api = HfApi()
 
-    api.upload_file(
-        path_or_fileobj=index,
-        path_in_repo=index_path,
-        repo_id=args.hf_repo,
-        repo_type="dataset",
-    )
-    api.upload_file(
-        path_or_fileobj=image_matrix_arr,
-        path_in_repo=img_fbin_path,
-        repo_id=args.hf_repo,
-        repo_type="dataset",
-    )
-    api.upload_file(
-        path_or_fileobj=text_matrix_arr,
-        path_in_repo=txt_fbin_path,
-        repo_id=args.hf_repo,
-        repo_type="dataset",
-    )
-    api.upload_file(
-        path_or_fileobj=labels_arr,
-        path_in_repo=labels_path,
-        repo_id=args.hf_repo,
-        repo_type="dataset",
-    )
+    with tempfile.TemporaryDirectory() as tmpdir:
+        index_path = os.path.join(tmpdir, "usearch_index.usearch")
+        img_fbin_path = os.path.join(tmpdir, "image_embeddings.fbin")
+        txt_fbin_path = os.path.join(tmpdir, "text_embeddings.fbin")
+        labels_path = os.path.join(tmpdir, "labels.npy")
+
+        # Save to temp files
+        index.save(index_path)
+        save_matrix(image_matrix_arr, img_fbin_path)
+        save_matrix(text_matrix_arr, txt_fbin_path)
+        np.save(labels_path, labels_arr)
+
+        # Upload artifacts to HF dataset repo
+        logger.info("Uploading USearch index and embedding matrices to %s...", args.hf_repo)
+
+        api.upload_file(
+            path_or_fileobj=index_path,
+            path_in_repo="usearch_index.usearch",
+            repo_id=args.hf_repo,
+            repo_type="dataset",
+        )
+        api.upload_file(
+            path_or_fileobj=img_fbin_path,
+            path_in_repo="image_embeddings.fbin",
+            repo_id=args.hf_repo,
+            repo_type="dataset",
+        )
+        api.upload_file(
+            path_or_fileobj=txt_fbin_path,
+            path_in_repo="text_embeddings.fbin",
+            repo_id=args.hf_repo,
+            repo_type="dataset",
+        )
+        api.upload_file(
+            path_or_fileobj=labels_path,
+            path_in_repo="labels.npy",
+            repo_id=args.hf_repo,
+            repo_type="dataset",
+        )
 
     logger.info("All done! Dataset + USearch index + embeddings are in %s", args.hf_repo)
+
 
 
 if __name__ == "__main__":
