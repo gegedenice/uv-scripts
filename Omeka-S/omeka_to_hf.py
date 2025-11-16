@@ -66,7 +66,7 @@ from typing import Any, Dict, List
 import numpy as np
 import pandas as pd
 import requests
-from datasets import Dataset
+from datasets import Dataset, Image as HFImage
 from huggingface_hub import HfApi, login
 from PIL import Image
 from tqdm import tqdm
@@ -239,6 +239,30 @@ def fuse_embeddings(img_vec: np.ndarray, txt_vec: np.ndarray, w_img: float = 0.5
     fused = fused / (np.linalg.norm(fused) + 1e-9)
     return fused.astype("float32")
 
+# Define how to build the thumbnail from images_urls
+def make_thumbnail(example, size=256):
+    urls = example.get("images_urls") or []
+    if isinstance(urls, str):
+        urls = [urls]
+
+    if not urls:
+        # No image for this item
+        return {"thumbnail": None}
+
+    url = urls[0]  # take only the first image for now
+    if not isinstance(url, str):
+        return {"thumbnail": None}
+
+    try:
+        resp = requests.get(url, stream=True, timeout=30, verify=False)
+        resp.raise_for_status()
+        pil_img = Image.open(BytesIO(resp.content)).convert("RGB")
+        pil_img.thumbnail((size, size))  # in-place, keeps aspect ratio
+        return {"thumbnail": pil_img}
+    except Exception as e:
+        print(f"Failed to fetch/thumbnail image {url}: {e}")
+        return {"thumbnail": None}
+
 
 # ------------------------
 # Main pipeline
@@ -319,13 +343,10 @@ def main() -> None:
     df = reorder_columns(df, ["id", "item_id", "Identifier", "images_urls", "Title"])
 
     # --------------------
-    # Build and push HF Dataset
+    # Build HF Dataset
     # --------------------
     logger.info("Building Hugging Face Dataset from Pandas DataFrame...")
     hf_dataset = Dataset.from_pandas(df, preserve_index=False)
-
-    logger.info("Pushing base metadata dataset to %s...", args.hf_repo)
-    hf_dataset.push_to_hub(args.hf_repo, private=False)
 
     # --------------------
     # Prepare items for embeddings (only Title + images)
@@ -399,8 +420,24 @@ def main() -> None:
     image_matrix_arr = np.stack(image_matrix)
     text_matrix_arr = np.stack(text_matrix)
     labels_arr = np.asarray(labels, dtype=np.int64)
+    
+    # --------------------
+    # Push HF Dataset
+    # --------------------
+    logger.info("Pushing base metadata dataset to %s...", args.hf_repo)
 
-        # --------------------
+    features = hf_dataset.features.copy()
+    features["thumbnail"] = HFImage()   # single image per row
+
+    # Map over the dataset to create the thumbnails
+    hf_dataset = hf_dataset.map(
+        make_thumbnail,
+        features=features,
+    )
+    # Now push everything (metadata + thumbnail column) to the Hub
+    hf_dataset.push_to_hub(args.hf_repo, private=False)
+
+    # --------------------
     # Save index + matrices in a temporary directory and upload
     # --------------------
     logger.info("Saving USearch index and embedding matrices in a temp directory and uploading to HF...")
