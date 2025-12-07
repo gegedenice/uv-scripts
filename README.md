@@ -2,6 +2,12 @@
 
 uv utilities : some python files remotly actionable with `uv run...`
 
+## OpenAlex Embedding Atlas Dashboard
+
+A Python script that harvests works from the OpenAlex API and visualizes them using the interactive and semantic dashboard provided by the embedding-atlas library.
+
+See [README](https://github.com/gegedenice/uv-scripts/blob/main/Openalex-embedding-atlas-dashboard/README.md)
+
 ## RAG demo
 
 Some Python utilities for building and querying RAG, see [README](https://github.com/gegedenice/uv-scripts/blob/main/RAG/README.md)
