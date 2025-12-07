@@ -73,6 +73,10 @@ For more query examples, see the [OpenAlex API documentation](https://docs.opena
 - `--query` (required): The OpenAlex query string to search for works. Uses OpenAlex filter syntax.
 - `--email` (optional): Your email address for the API polite tool. Recommended for better rate limits.
 
+## Open dashboard
+
+Open localhost on the embedding-atlas default port 5055 : http://localhost:5055
+
 ## How It Works
 
 1. **Data Harvesting**: The script connects to the OpenAlex API and retrieves works matching your query
