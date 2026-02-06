@@ -66,7 +66,22 @@ class OpenaiLLMLoader(LLMLoader):
         return self.base_url
     def get_provider_name(self) -> str:
         return "OpenAI"
-
+        
+class OllamaCloudLLMLoader(LLMLoader):
+    def __init__(self):
+        self.base_url = "https://ollama.com/v1"
+    def get_base_url(self) -> str:
+        return self.base_url
+    def get_provider_name(self) -> str:
+        return "OllamaCloud"
+        
+class AlbertLLMLoader(LLMLoader):
+    def __init__(self):
+        self.base_url = "https://albert.api.etalab.gouv.fr/v1"
+    def get_base_url(self) -> str:
+        return self.base_url
+    def get_provider_name(self) -> str:
+        return "Albert"
 
 class RunpodLLMLoader(LLMLoader):
     def __init__(self, runpod_endpoint_id: str):
@@ -160,6 +175,8 @@ def _infer_api_key(provider: str, cli_key: Optional[str]) -> Optional[str]:
         "openai": "OPENAI_API_KEY",
         "groq": "GROQ_API_KEY",
         "runpod": "RUNPOD_API_KEY",
+        "ollama-cloud": "OLLAMA_API_KEY",
+        "albert": "ALBERT_API_KEY",
         "huggingface": None,
     }
     env_name = env_map.get(provider)
@@ -182,6 +199,10 @@ def build_loader(provider: str, args: argparse.Namespace) -> LLMLoader:
         return OpenaiLLMLoader()
     elif p == "groq":
         return GroqLLMLoader()
+    elif p == "ollama-cloud":
+        return OllamaCloudLLMLoader()
+    elif p == "albert":
+        return AlbertLLMLoader()
     elif p == "runpod":
         if not args.runpod_endpoint_id:
             raise ValueError("--runpod-endpoint-id is required when --provider runpod")
@@ -197,7 +218,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Universal OpenAI-compatible LLM CLI (OpenAI, Groq, Runpod, HuggingFace)."
     )
-    parser.add_argument("--provider", required=True, help="openai | groq | runpod | hf|huggingface")
+    parser.add_argument("--provider", required=True, help="openai | groq | runpod | ollama-cloud | albert | hf|huggingface")
     parser.add_argument("--model", required=False, help="Model name (required unless --list-models).")
     parser.add_argument("--api-key", help="API key (otherwise read from env).")
     parser.add_argument("--base-url", help="Override base URL (advanced).")

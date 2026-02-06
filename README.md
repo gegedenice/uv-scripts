@@ -8,9 +8,13 @@ A Python script that harvests works from the OpenAlex API and visualizes them us
 
 See [README](https://github.com/gegedenice/uv-scripts/blob/main/Openalex-embedding-atlas-dashboard/README.md)
 
+---
+
 ## RAG demo
 
 Some Python utilities for building and querying RAG, see [README](https://github.com/gegedenice/uv-scripts/blob/main/RAG/README.md)
+
+---
 
 ## Idref Web services
 
@@ -21,6 +25,8 @@ GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/idref-webse
 ```
 uv run "{GH_RAW}" --web-service idref2id --id 240229061 --json-output
 ```
+
+---
 
 ## llms-openai-inference.py
 
@@ -52,6 +58,28 @@ uv run "{GH_RAW}" \
   --provider groq \
   --model moonshotai/kimi-k2-instruct-0905 \
   -u "Give 3 bullet points about RAG pitfalls."
+```
+
+### Ollama Cloud minimal
+
+```
+uv run "{GH_RAW}" \
+  --provider ollama-cloud \
+  --model kimi-k2.5:cloud \
+  --api-key "{OLLAMA_API_KEY}" \
+  -u "Summarize OAIS in 2 lines." \
+  -s "Be concise and precise."
+```
+
+### Albert APi minimal
+
+```
+uv run "{GH_RAW}" \
+  --provider albert \
+  --model kimi-k2.5:cloud \
+  --api-key "{ALBERT_API_KEY}" \
+  -u "Summarize OAIS in 2 lines." \
+  -s "Be concise and precise."
 ```
 
 ### Huggingface minimal
@@ -111,7 +139,7 @@ uv run "{GH_RAW}" \
   -u "What is an archival fonds?"
 ```
 
-### Self-hosted / local OpenAI-compatible server (override base URL)
+### Self-hosted / local OpenAI-compatible server (override base URL) / Remote-hosted OpenAI-compatible server (override base URL)
 
 ```
 export LLM_API_KEY=not-used-or-your-key
