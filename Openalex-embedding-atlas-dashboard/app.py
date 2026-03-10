@@ -79,17 +79,17 @@ EMBEDDING_ATLAS_CMD = [
 ]
 
 
-def harvest_works(query: str, email: Optional[str] = None) -> list[dict]:
+def harvest_works(query: str, api_key: Optional[str] = None) -> list[dict]:
     """
     Harvest works from OpenAlex API based on the given query.
     Args:
         query: The OpenAlex query to search for.
-        email: Optional email for the API polite tool.
+        api_key: Optional but recommended OpenAlex API key
         
     Returns:
         List of work dictionaries from OpenAlex.
     """
-    client = OpenAlexClient(email=email)
+    client = OpenAlexClient(api_key=api_key)
     return client.list_all_works(
         filter=query,
         digest=True,
@@ -191,10 +191,10 @@ def parse_arguments() -> argparse.Namespace:
         help="The OpenAlex query to search for.",
     )
     parser.add_argument(
-        "--email",
+        "--api-key",
         type=str,
         required=False,
-        help="The email for the API polite tool.",
+        help="OpenAlex API key.",
     )
     return parser.parse_args()
 
@@ -204,7 +204,7 @@ def main() -> None:
     args = parse_arguments()
     
     print(f"Harvesting OpenAlex works for query: {args.query}")
-    works = harvest_works(args.query, email=args.email)
+    works = harvest_works(args.query, api_key=args.api_key)
     
     df_atlas = prepare_dataframe(works)
     

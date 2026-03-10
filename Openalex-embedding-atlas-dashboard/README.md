@@ -41,29 +41,29 @@ Dependencies:
 uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "YOUR_OPENALEX_QUERY"
 ```
 
-### With Email (Recommended)
+### With API key (Recommended)
 
-For better API rate limits and polite usage, provide your email:
+For better API rate limits, provide your API key:
 
 ```bash
-uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "YOUR_OPENALEX_FILTER_QUERY" --email "your.email@example.com"
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "YOUR_OPENALEX_FILTER_QUERY" --api-key "your_API_key"
 ```
 
 ### Example of filter queries
 
 **Search by institution and publication date:**
 ```bash
-uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "authorships.institutions.lineage:i4210117840,publication_year:2024-" --email "your.email@example.com"
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "authorships.institutions.lineage:i4210117840,publication_year:2024-" --api-key "your_API_key"
 ```
 
 **Search by topic and OA true:**
 ```bash
-uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "topics.id:T11636,is_oa:true" --email "your.email@example.com"
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "topics.id:T11636,is_oa:true" --api-key "your_API_key"
 ```
 
 **Search by author and most cited works:**
 ```bash
-uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "authorships.author.id:A5085171399,cited_by_count:>100" --email "your.email@example.com"
+uv run https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Openalex-embedding-atlas-dashboard/app.py --query "authorships.author.id:A5085171399,cited_by_count:>100" --api-key "your_API_key"
 ```
 
 For more query examples, see the [OpenAlex API documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/filter-entity-lists).
@@ -71,7 +71,7 @@ For more query examples, see the [OpenAlex API documentation](https://docs.opena
 ## Command-Line Arguments
 
 - `--query` (required): The OpenAlex query string to search for works. Uses OpenAlex filter syntax.
-- `--email` (optional): Your email address for the API polite tool. Recommended for better rate limits.
+- `--api-key` (optional): Your OpenAlex API key. Recommended for better rate limits. See https://developers.openalex.org/guides/authentication
 
 ## Open dashboard
 
@@ -127,7 +127,7 @@ Press `Ctrl+C` to stop the embedding-atlas server. The script will clean up temp
 
 **Port already in use**: The `--auto-port` flag should automatically find an available port. If issues persist, ensure no other embedding-atlas instances are running.
 
-**API rate limits**: If you encounter rate limiting, make sure to provide your email with the `--email` flag.
+**API rate limits**: To avoid rate limiting, make sure to provide your API key with the `--api-key` flag.
 
 **Missing columns**: Some columns may not be present in all datasets. The script handles missing columns gracefully.
 

@@ -28,6 +28,24 @@ uv run "{GH_RAW}" --web-service idref2id --id 240229061 --json-output
 
 ---
 
+## Sudoc Multiwhere web service
+
+```
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/multiwhere-webservice.py"
+```
+
+```
+uv run "{GH_RAW}" 123456789 --format table
+uv run "{GH_RAW}" 123456789 --format geojson
+uv run "{GH_RAW}" 123456789 --format geojson > holdings.geojson
+uv run "{GH_RAW}" 123456789 --llm-mode clean_json # without llm posting
+uv run "{GH_RAW}" 123456789 --llm --llm-mode summary # with llm posting
+uv run "{GH_RAW}" 123456789 --llm --llm-mode summary --llm-url http://localhost:8080/v1/chat/completions --llm-model LFM2.5-1.2B-Instruct-Q8_0
+uv run "{GH_RAW}" 123456789 --llm --llm-mode summary --llm-url https://albert.api.etalab.gouv.fr/v1/chat/completions --llm-model openai/gpt-oss-120b --llm-api-key sk-xxxxx
+```
+
+---
+
 ## llms-openai-inference.py
 
 ```
