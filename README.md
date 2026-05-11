@@ -18,12 +18,27 @@ Some Python utilities for building and querying RAG, see [README](https://github
 
 ## Idref Web services
 
+### Basic
+
 ```
-GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/idref-webservice-basic.py"
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Idref/idref-webservice-basic.py"
 ```
 
 ```
 uv run "{GH_RAW}" --web-service idref2id --id 240229061 --json-output
+```
+
+### Authorities alignment pipeline (persons)
+
+- Developed for the Humatheque cataloging project
+- uv script adapted from https://github.com/gegedenice/humatheque-idref-qualinka-api 
+
+```
+GH_RAW="https://raw.githubusercontent.com/gegedenice/uv-scripts/main/Idref/idref-person-align.py"
+```
+
+```
+uv run "{GH_RAW}" --name "Valérie Robert" --title "Satisfaction et vécu périopératoire des patients opérés sous anesthésie péribulbaire" --degree-type "Thèse d'exercice"
 ```
 
 ---
